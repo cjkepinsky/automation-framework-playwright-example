@@ -1,5 +1,5 @@
 import { expect } from '@playwright/test';
-import BasePage from "./BasePage";
+import BasePage from "./basePage";
 
 export default class LoginPage extends BasePage {
     async isVisible() {
@@ -11,4 +11,17 @@ export default class LoginPage extends BasePage {
         await this.page.locator('input[name="password"]').fill(password)
         await this.page.locator('button[type="submit"]').click()
     }
+    
+    async typeLogin(login: string) {
+        await this.page.locator('input[name="email"]').fill(login)
+    }
+
+    async typePassword(password: string) {
+        await this.page.locator('input[name="password"]').fill(password)
+    }
+
+    async clickLoginButton() {
+        await this.page.locator('button[type="submit"]').click()
+    }
+    
 }

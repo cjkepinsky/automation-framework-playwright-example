@@ -1,5 +1,5 @@
 import { expect } from "playwright/test";
-import BasePage from "./BasePage";
+import BasePage from "./basePage";
 
 export default class HomePage extends BasePage {
 
