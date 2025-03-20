@@ -4,4 +4,4 @@
 # Installation
 `npm install`
 # Running tests
-`npx playwright test`
+`npx playwright test --project=firefox`

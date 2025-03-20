@@ -4,6 +4,7 @@ import LoginPage from './pages/loginPage';
 import DashboardPage from './pages/dashboardPage';
 import NewProductsPage from './pages/newProductsPage';
 import ProductDetailsPage from './pages/productDetailsPage';
+import BasketPage from './pages/basketPage';
 
 test.describe('User authentication', () => {
   let homePage: HomePage;
@@ -11,6 +12,7 @@ test.describe('User authentication', () => {
   let dashboardPage: DashboardPage;
   let newProductsPage: NewProductsPage;
   let productDetailsPage: ProductDetailsPage;
+  let basketPage: BasketPage;
 
   test.beforeEach(async ({ page }) => {
     homePage = new HomePage(page);
@@ -18,6 +20,7 @@ test.describe('User authentication', () => {
     dashboardPage = new DashboardPage(page);
     newProductsPage = new NewProductsPage(page);
     productDetailsPage = new ProductDetailsPage(page);
+    basketPage = new BasketPage(page);
     
     await homePage.open();
     await homePage.isCloseCookiesDialogBtnVisible();
@@ -43,6 +46,7 @@ test.describe('User authentication', () => {
 
     await productDetailsPage.basketSidebar.isVisible();
     await productDetailsPage.basketSidebar.clickShowBasket();
+    await basketPage.isVisible();
   });
 
 });
