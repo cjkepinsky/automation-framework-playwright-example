@@ -37,16 +37,22 @@ test.describe('User authentication', () => {
   });
 
   test('User can add items to basket', async () => {
+    let initialTotalPrice: number;
+
     await dashboardPage.clickTopMenuOption('Nowości');
     await newProductsPage.isVisible();
     await newProductsPage.clickProduct(1);
     await productDetailsPage.isVisible();
     await productDetailsPage.clickSizeSelectionButton('S');
     await productDetailsPage.clickAddToBasket();
-
     await productDetailsPage.basketSidebar.isVisible();
     await productDetailsPage.basketSidebar.clickShowBasket();
     await basketPage.isVisible();
+    initialTotalPrice = await basketPage.getTotalPrice();
+    await basketPage.clickIncreaseQuantityForFirstProduct();
+    await basketPage.clickUpdateBasket();
+
+    await basketPage.isBasketTotalPRiceHigherThan(initialTotalPrice);
   });
 
 });
