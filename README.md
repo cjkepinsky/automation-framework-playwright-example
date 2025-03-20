@@ -9,5 +9,14 @@
 
 # Installation
 `npm install`
+
+# Configuration
+1. Copy `.env.example` to `.env`
+2. Fill in your credentials in `.env` file:
+   ```
+   FOURF_USER_EMAIL=your.email@example.com
+   FOURF_USER_PASSWORD=your_password
+   ```
+
 # Running tests
 `npx playwright test --project=firefox`

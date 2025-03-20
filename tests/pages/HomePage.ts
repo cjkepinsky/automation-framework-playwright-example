@@ -25,4 +25,8 @@ export default class HomePage extends BasePage {
     async isCloseCookiesDialogBtnVisible() {
         await expect(this.cookiesDialogAgreeBtnLocator).toBeVisible()
     }
+
+    async clickLanguageModalCloseBtn() {
+        await this.page.locator('button.betterMaskFit-closeButton-Mq0').click();
+    }
 }

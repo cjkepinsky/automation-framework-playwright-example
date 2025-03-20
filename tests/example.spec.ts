@@ -6,7 +6,7 @@ import NewProductsPage from './pages/newProductsPage';
 import ProductDetailsPage from './pages/productDetailsPage';
 import BasketPage from './pages/basketPage';
 
-test.describe('User authentication', () => {
+test.describe('Logged-in User adds item to Basket', () => {
   let homePage: HomePage;
   let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
@@ -25,18 +25,18 @@ test.describe('User authentication', () => {
     await homePage.open();
     await homePage.isCloseCookiesDialogBtnVisible();
     await homePage.closeCookiesDialog();
-
+    await homePage.clickLanguageModalCloseBtn();
     await homePage.isLoginLinkVisible();
     await homePage.clickLoginLink();
     await loginPage.isVisible();
-    await loginPage.typeLogin('cjkepinsky@gmail.com');
-    await loginPage.typePassword('B^c4zZM#6abV9Z4Q');
+    await loginPage.typeLogin(process.env.FOURF_USER_EMAIL || '');
+    await loginPage.typePassword(process.env.FOURF_USER_PASSWORD || '');
     await loginPage.clickLoginButton();
 
     await dashboardPage.isVisible();
   });
 
-  test('User can add items to basket', async () => {
+  test('Logged-in User can add items to Basket', async () => {
     let initialTotalPrice: number;
 
     await dashboardPage.clickTopMenuOption('Nowości');
@@ -52,7 +52,7 @@ test.describe('User authentication', () => {
     await basketPage.clickIncreaseQuantityForFirstProduct();
     await basketPage.clickUpdateBasket();
 
-    await basketPage.isBasketTotalPRiceHigherThan(initialTotalPrice);
+    await basketPage.isBasketTotalPriceHigherThan(initialTotalPrice);
   });
 
 });

@@ -10,7 +10,7 @@ export default class BasketPage extends BasePage {
 
     async getTotalPrice(): Promise<number> {
         const priceText = await this.page.locator(this.totalPriceSelector).textContent();
-        if (!priceText) throw new Error('Nie znaleziono ceny');
+        if (!priceText) throw new Error('Total Basket price not found');
         
         const price = parseFloat(priceText.replace(' PLN', '').replace(',', '.'));
         console.log("price: ", price);
@@ -26,7 +26,7 @@ export default class BasketPage extends BasePage {
         await this.page.waitForTimeout(3000);
     }
 
-    async isBasketTotalPRiceHigherThan(initialTotalPrice: number) {
+    async isBasketTotalPriceHigherThan(initialTotalPrice: number) {
         let newTotalPrice = await this.getTotalPrice();
     
         expect(newTotalPrice).toBeGreaterThan(initialTotalPrice);
