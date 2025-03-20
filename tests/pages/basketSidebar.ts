@@ -1,25 +1,19 @@
-import { expect, Page } from "@playwright/test";
+import { expect } from "@playwright/test";
+import BaseComponent from "./baseComponent";
 
-export default class BasketSidebar {
-    private page: Page;
+export default class BasketSidebar extends BaseComponent {
 
-    constructor(page: Page) {
-        this.page = page;
-    }
+    private basketSidebarSelector = 'div.miniCart-footer-xKn';
+    private showBasketButtonSelector = `${this.basketSidebarSelector} button`;
 
     async isVisible() {
-        await expect(this.page.locator('div.miniCart-footer-xKn')).toBeVisible()
+        await expect(this.page.locator(this.basketSidebarSelector)).toBeVisible()
     }
 
     async clickShowBasket() {
-        await this.page.evaluate(() => {
-            const buttons = document.querySelectorAll('div.miniCart-footer-xKn button');
-            const showBasketButton = Array.from(buttons).find(button => button.textContent?.includes('Pokaż koszyk'));
-            if (showBasketButton) {
-                (showBasketButton as HTMLButtonElement).click();
-            }
-        });
+        await this.clickByText(
+            this.showBasketButtonSelector, 
+            'Pokaż koszyk'
+        );
     }
-    
-    
 }

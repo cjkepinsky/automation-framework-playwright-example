@@ -3,7 +3,6 @@ import BasePage from "./basePage";
 
 export default class ProductDetailsPage extends BasePage {
     private productDetailsFormLocator = this.page.locator('form.productFullDetail-mainForm-EW7');
-    private addToBasketButtonLocator = this.page.locator('form.productFullDetail-mainForm-EW7 button[type="submit"]:has-text("Dodaj do koszyka")');
     
     constructor(page: Page) {
         super(page);
@@ -15,16 +14,16 @@ export default class ProductDetailsPage extends BasePage {
     }
 
     async clickAddToBasket() {
-        await this.addToBasketButtonLocator.click();
+        await this.clickByText(
+            'form.productFullDetail-mainForm-EW7 button[type="submit"]', 
+            'Dodaj do koszyka'
+        );
     }
 
     async clickSizeSelectionButton(size: "S" | "M" | "L" | "XL" | "XXL") {
-        await this.page.evaluate((size) => {
-            const element = document.querySelector(`div.option-rootSizeOptions-okg button[title="${size}"]`) as HTMLButtonElement;
-            if (element) {
-                element.click();
-            }
-        }, size);
+        await this.clickByText(
+            `div.option-rootSizeOptions-okg button[title="${size}"]`,
+            size
+        );
     }
-
 }

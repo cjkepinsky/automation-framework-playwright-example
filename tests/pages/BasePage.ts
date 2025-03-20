@@ -1,13 +1,13 @@
 import { Page } from '@playwright/test';
+import BaseComponent from './baseComponent';
 import BasketSidebar from './basketSidebar';
 
-export default class BasePage {
-    protected page: Page;
+export default class BasePage extends BaseComponent {
     public basketSidebar: BasketSidebar;
 
     constructor(page: Page) {
-      this.page = page;
-      this.basketSidebar = new BasketSidebar(page);
+        super(page);
+        this.basketSidebar = new BasketSidebar(page);
     }
 
     public async open(url: string) {
@@ -18,7 +18,6 @@ export default class BasePage {
     }
 
     public async clickTopMenuOption(optionName: string) {
-        await this.page.locator(`div#header-main a:has-text("${optionName}")`).click();
+        await this.clickByText('div#header-main a', optionName);
     }
-
 }

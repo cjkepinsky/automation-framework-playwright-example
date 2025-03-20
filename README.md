@@ -1,5 +1,11 @@
-# automation-framework-playwright-example
+# Test Automation Framework - Playwright Example
  Automation tests in Playwright - example for 4F website
+
+# Task on hand
+1. Log-in with correct credentials and verify whether the login was successful
+2. Add any product to the cart and verify its appearance in the mini cart  
+3. Add any product to the cart, proceed to the cart, verify the current total amount to be paid > adding one more item in the cart itself (or apply a discount code if available) > verify whether the amount has changed
+4. Generate any report after testing.
 
 # Installation
 `npm install`
