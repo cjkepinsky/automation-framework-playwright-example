@@ -7,8 +7,9 @@ export default class NewProductsPage extends BasePage {
     }
 
     async isVisible() {
-        await this.page.waitForSelector('.indicator-loader', { state: 'hidden' });
-        await expect(this.page.locator('h1:has-text("Nowości")')).toBeVisible()
+        await this.page.waitForLoadState('networkidle');
+        await this.page.waitForSelector('.indicator-loader', { state: 'hidden', timeout: 10000 });
+        await expect(this.page.locator('h1:has-text("Nowości")')).toBeVisible({ timeout: 10000 });
     }
 
     async clickProduct(productNumber: number) {

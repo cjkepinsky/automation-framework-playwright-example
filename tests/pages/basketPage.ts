@@ -13,7 +13,6 @@ export default class BasketPage extends BasePage {
         if (!priceText) throw new Error('Total Basket price not found');
         
         const price = parseFloat(priceText.replace(' PLN', '').replace(',', '.'));
-        console.log("price: ", price);
         return price;
     }
 

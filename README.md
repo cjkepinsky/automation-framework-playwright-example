@@ -19,4 +19,7 @@
    ```
 
 # Running tests
-`npx playwright test --project=firefox`
+`npm run test`
+
+# Showing Report
+`npm run report`

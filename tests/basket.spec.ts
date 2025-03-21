@@ -6,7 +6,7 @@ import NewProductsPage from './pages/newProductsPage';
 import ProductDetailsPage from './pages/productDetailsPage';
 import BasketPage from './pages/basketPage';
 
-test.describe('Logged-in User adds item to Basket', () => {
+test.describe('User adds item to Basket', () => {
   let homePage: HomePage;
   let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
@@ -34,6 +34,9 @@ test.describe('Logged-in User adds item to Basket', () => {
     await loginPage.clickLoginButton();
 
     await dashboardPage.isVisible();
+    await dashboardPage.basketSidebar.clickShowBasket();
+    await dashboardPage.basketSidebar.removeAllItemsFromBasket();
+    await dashboardPage.open();
   });
 
   test('Logged-in User can add items to Basket', async () => {
