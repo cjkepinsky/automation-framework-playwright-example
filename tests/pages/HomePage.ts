@@ -1,13 +1,18 @@
-import { expect } from "playwright/test";
+import { expect, Page } from "playwright/test";
 import BasePage from "./BasePage";
+import { plLabels } from "../labels";
 
 export default class HomePage extends BasePage {
 
     private loginLinkLocator = this.page.locator('a.accountTrigger-trigger-wml')
     private cookiesDialogAgreeBtnLocator = this.page.locator('button#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll')
 
+    constructor(page: Page) {
+        super(page);
+    }
+
     async open() {
-        await super.open('https://4f.com.pl/')
+        await super.open(plLabels.urls.home)
     }
 
     async isLoginLinkVisible() {

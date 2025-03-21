@@ -21,5 +21,9 @@
     "sizes": ["XS", "S", "M", "L", "XL", "XXL"],
     "currency": {
         "short": "PLN"
+    },
+    "urls": {
+        "home": "https://4f.com.pl/",
+        "dashboard": "https://4f.com.pl/customer/account"
     }
 }
