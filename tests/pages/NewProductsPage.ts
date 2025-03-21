@@ -1,5 +1,5 @@
 import { expect, Page } from "@playwright/test";
-import BasePage from "./basePage"
+import BasePage from "./BasePage"
 
 export default class NewProductsPage extends BasePage {
     constructor(page: Page) {

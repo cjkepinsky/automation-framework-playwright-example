@@ -1,5 +1,6 @@
 import { expect, Page } from "@playwright/test";
-import BasePage from "./basePage";
+import BasePage from "./BasePage";
+import { plLabels } from "../labels";
 
 export default class ProductDetailsPage extends BasePage {
     private productDetailsFormLocator = this.page.locator('form.productFullDetail-mainForm-EW7');
@@ -16,14 +17,14 @@ export default class ProductDetailsPage extends BasePage {
     async clickAddToBasket() {
         await this.clickByText(
             'form.productFullDetail-mainForm-EW7 button[type="submit"]', 
-            'Dodaj do koszyka'
+            plLabels.basket.addToBasket
         );
     }
 
-    async clickSizeSelectionButton(size: "S" | "M" | "L" | "XL" | "XXL") {
+    async clickSizeSelectionButton(size: typeof plLabels.sizes[number]) {
         await this.clickByText(
-            `div.option-rootSizeOptions-okg button[title="${size}"]`,
-            size
+            `div.option-rootSizeOptions-okg button[title="${plLabels.sizes[size]}"]`,
+            plLabels.sizes[size]
         );
     }
 }

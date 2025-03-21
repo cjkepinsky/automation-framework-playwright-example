@@ -1,5 +1,6 @@
 import { expect } from "@playwright/test";
-import BaseComponent from "./baseComponent";
+import BaseComponent from "./BaseComponent";
+import { plLabels } from "../labels";
 
 export default class BasketSidebar extends BaseComponent {
 
@@ -8,13 +9,14 @@ export default class BasketSidebar extends BaseComponent {
     private removeItemButtonSelector = 'button.removeAllItemsFromBasket';
 
     async isVisible() {
-        await expect(this.page.locator(this.basketSidebarSelector)).toBeVisible()
+        await this.page.waitForSelector(this.basketSidebarSelector, { state: 'visible', timeout: 10000 });
+        await expect(this.page.locator(this.basketSidebarSelector)).toBeVisible();
     }
 
     async clickShowBasket() {
         await this.clickByText(
             this.showBasketButtonSelector, 
-            'Pokaż koszyk'
+            plLabels.basket.sidebar.showBasket
         );
     }
 
@@ -23,7 +25,7 @@ export default class BasketSidebar extends BaseComponent {
         
         for (const button of removeButtons) {
             await button.click();
-            await this.page.waitForTimeout(2000); // czekamy 2 sekundy po każdym kliknięciu
+            await this.page.waitForTimeout(2000);
         }
     }
 }

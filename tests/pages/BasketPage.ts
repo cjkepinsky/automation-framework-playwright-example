@@ -1,18 +1,19 @@
-import { expect } from "playwright/test";
-import BasePage from "./basePage";
+import { expect, Page } from "@playwright/test";
+import BasePage from "./BasePage";
+import { plLabels } from "../labels";
 
 export default class BasketPage extends BasePage {
     private totalPriceSelector = 'div.summary-grandTotal-oU3 span.summary-amount-dfs';
 
     async isVisible() {
-        await expect(this.page.locator('h1')).toHaveText('Twój koszyk');
+        await expect(this.page.locator('h1')).toHaveText(plLabels.basket.page.title);
     }
 
     async getTotalPrice(): Promise<number> {
         const priceText = await this.page.locator(this.totalPriceSelector).textContent();
         if (!priceText) throw new Error('Total Basket price not found');
         
-        const price = parseFloat(priceText.replace(' PLN', '').replace(',', '.'));
+        const price = parseFloat(priceText.replace(` ${plLabels.currency.short}`, '').replace(',', '.'));
         return price;
     }
 

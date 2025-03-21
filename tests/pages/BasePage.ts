@@ -1,6 +1,6 @@
 import { Page } from '@playwright/test';
-import BaseComponent from './baseComponent';
-import BasketSidebar from './basketSidebar';
+import BaseComponent from './BaseComponent';
+import BasketSidebar from './BasketSidebar';
 
 export default class BasePage extends BaseComponent {
     public basketSidebar: BasketSidebar;
@@ -17,8 +17,9 @@ export default class BasePage extends BaseComponent {
         });
     }
 
-    public async clickTopMenuOption(optionName: string) {
-        await this.page.locator(`nav a:has-text("${optionName}")`).click();
+    public async clickTopMenuOption(optionText: string) {
+        await this.page.locator(`nav a:has-text("${optionText}")`).click();
         await this.page.waitForLoadState('networkidle');
+        await this.page.waitForTimeout(1000);
     }
 }

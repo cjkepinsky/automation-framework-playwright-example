@@ -1,0 +1,25 @@
+{
+    "topMenu": {
+        "newProducts": "Nowości",
+        "woman": "Kobieta",
+        "man": "Mężczyzna",
+        "girl": "DZIEWCZYNA",
+        "boy": "CHŁOPAK",
+        "sports": "Sporty",
+        "promotions": "Promocje",
+        "underArmour": "Under Armour"
+    },
+    "basket": {
+        "addToBasket": "Dodaj do koszyka",
+        "sidebar": {
+            "showBasket": "Pokaż koszyk"
+        },
+        "page": {
+            "title": "Twój koszyk"
+        }
+    },
+    "sizes": ["XS", "S", "M", "L", "XL", "XXL"],
+    "currency": {
+        "short": "PLN"
+    }
+}

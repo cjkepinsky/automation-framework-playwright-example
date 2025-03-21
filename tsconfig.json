@@ -4,6 +4,7 @@
       "module": "commonjs",
       "lib": ["ESNext", "DOM"],
       "types": ["node", "playwright"],
-      "esModuleInterop": true
+      "esModuleInterop": true,
+      "resolveJsonModule": true
     }
   }

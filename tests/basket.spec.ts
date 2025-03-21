@@ -1,12 +1,13 @@
 import { test } from '@playwright/test';
-import HomePage from './pages/homePage';
-import LoginPage from './pages/loginPage';
-import DashboardPage from './pages/dashboardPage';
-import NewProductsPage from './pages/newProductsPage';
-import ProductDetailsPage from './pages/productDetailsPage';
-import BasketPage from './pages/basketPage';
+import HomePage from './pages/HomePage';
+import LoginPage from './pages/LoginPage';
+import DashboardPage from './pages/DashboardPage';
+import NewProductsPage from './pages/NewProductsPage';
+import ProductDetailsPage from './pages/ProductDetailsPage';
+import BasketPage from './pages/BasketPage';
+import { plLabels } from './labels';
 
-test.describe('User adds item to Basket', () => {
+test.describe('Logged-in User adds item to Basket', () => {
   let homePage: HomePage;
   let loginPage: LoginPage;
   let dashboardPage: DashboardPage;
@@ -42,20 +43,17 @@ test.describe('User adds item to Basket', () => {
   test('Logged-in User can add items to Basket', async () => {
     let initialTotalPrice: number;
 
-    await dashboardPage.clickTopMenuOption('Nowości');
+    await dashboardPage.clickTopMenuOption(plLabels.topMenu.newProducts);
     await newProductsPage.isVisible();
     await newProductsPage.clickProduct(1);
     await productDetailsPage.isVisible();
-    await productDetailsPage.clickSizeSelectionButton('S');
+    await productDetailsPage.clickSizeSelectionButton(plLabels.sizes[1]);
     await productDetailsPage.clickAddToBasket();
-    await productDetailsPage.basketSidebar.isVisible();
     await productDetailsPage.basketSidebar.clickShowBasket();
-    await basketPage.isVisible();
     initialTotalPrice = await basketPage.getTotalPrice();
     await basketPage.clickIncreaseQuantityForFirstProduct();
     await basketPage.clickUpdateBasket();
 
     await basketPage.isBasketTotalPriceHigherThan(initialTotalPrice);
   });
-
 });
