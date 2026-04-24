@@ -1,29 +1,36 @@
-import { expect, Page } from "@playwright/test";
-import BasePage from "./BasePage"
+import { expect, Page } from '@playwright/test';
+import BasePage from './BasePage';
+import { plLabels } from '../labels';
 
 export default class NewProductsPage extends BasePage {
+    private readonly productCards = this.page.locator('[class*="item-root"] a[class*="item-images"]');
+
     constructor(page: Page) {
         super(page);
     }
 
+    async open() {
+        await super.open(plLabels.urls.newProducts);
+    }
+
     async isVisible() {
-        await this.page.waitForLoadState('networkidle');
-        await this.page.waitForSelector('.indicator-loader', { state: 'hidden', timeout: 10000 });
-        await expect(this.page.locator('h1:has-text("Nowości")')).toBeVisible({ timeout: 10000 });
+        await this.page.locator('.indicator-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => undefined);
+        await expect(this.page).toHaveURL(/nowosci/i);
+        await expect(this.productCards.first()).toBeVisible({ timeout: 10000 });
     }
 
     async clickProduct(productNumber: number) {
-        const productLocator = this.page.locator('a.itemQuarticon-images-tVx').first();
+        const productIndex = productNumber - 1;
+
+        if (productIndex < 0) {
+            throw new Error(`Product number must be greater than 0. Received: ${productNumber}`);
+        }
+
+        const productLocator = this.productCards.nth(productIndex);
+
         await productLocator.scrollIntoViewIfNeeded();
         await productLocator.waitFor({ state: 'visible' });
-        await this.page.waitForTimeout(1000);
-        
-        await this.page.evaluate((selector) => {
-            const element = document.querySelector(selector) as HTMLElement;
-            if (element) {
-                element.click();
-            }
-        }, 'a.itemQuarticon-images-tVx');
-        await this.page.waitForLoadState('networkidle');
+        await productLocator.click();
+        await this.page.waitForLoadState('domcontentloaded');
     }
 }

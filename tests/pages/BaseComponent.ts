@@ -1,4 +1,4 @@
-import { Page } from "@playwright/test";
+import { expect, Locator, Page } from '@playwright/test';
 
 export default class BaseComponent {
     protected page: Page;
@@ -7,15 +7,16 @@ export default class BaseComponent {
         this.page = page;
     }
 
-    protected async clickByText(containerSelector: string, text: string) {
-        await this.page.evaluate(
-            ({ container, searchText }) => {
-                const elements = document.querySelectorAll(container);
-                const element = Array.from(elements)
-                    .find(el => el.textContent?.includes(searchText));
-                if (element) (element as HTMLElement).click();
-            },
-            { container: containerSelector, searchText: text }
-        );
+    protected async clickByText(container: string | Locator, text: string) {
+        const scope = typeof container === 'string' ? this.page.locator(container) : container;
+        const target = scope.filter({ hasText: this.createExactTextPattern(text) }).first();
+
+        await expect(target, `Could not find clickable element with text "${text}"`).toBeVisible();
+        await target.click();
+    }
+
+    private createExactTextPattern(text: string): RegExp {
+        const escapedText = text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+        return new RegExp(`^\\s*${escapedText}\\s*$`);
     }
 }

@@ -1,34 +1,39 @@
-import { expect, Page } from "@playwright/test";
-import BasePage from "./BasePage";
-import { plLabels } from "../labels";
+import { expect } from '@playwright/test';
+import BasePage from './BasePage';
+import { plLabels } from '../labels';
 
 export default class BasketPage extends BasePage {
-    private totalPriceSelector = 'div.summary-grandTotal-oU3 span.summary-amount-dfs';
+    private readonly totalPriceLocator = this.page.locator('[class*="priceSummary-totalPrice"]').first();
+    private readonly quantitySelect = this.page.locator('select[name="quantity"]').first();
 
     async isVisible() {
-        await expect(this.page.locator('h1')).toHaveText(plLabels.basket.page.title);
+        await expect(this.page).toHaveURL(/\/cart\b/);
+        await expect(this.totalPriceLocator).toBeVisible({ timeout: 10000 });
     }
 
     async getTotalPrice(): Promise<number> {
-        const priceText = await this.page.locator(this.totalPriceSelector).textContent();
+        await expect(this.totalPriceLocator).toBeVisible();
+        const priceText = await this.totalPriceLocator.textContent();
         if (!priceText) throw new Error('Total Basket price not found');
-        
-        const price = parseFloat(priceText.replace(` ${plLabels.currency.short}`, '').replace(',', '.'));
-        return price;
+
+        const priceMatch = priceText.match(/(\d+[,\d]*)\s*PLN/);
+        if (!priceMatch) {
+            throw new Error(`Could not parse basket total price from "${priceText}"`);
+        }
+
+        return parseFloat(priceMatch[1].replace(',', '.'));
     }
 
-    async clickIncreaseQuantityForFirstProduct() {
-        await this.page.locator('table.cart-productListing--0q tr:first-of-type button.quantity-plus-xvN').click();
-    }
-
-    async clickUpdateBasket() {
-        await this.page.locator('button.quantity-confirmButton-dUK').click();
-        await this.page.waitForTimeout(3000);
+    async changeQuantityForFirstProduct(quantity: number) {
+        await expect(this.quantitySelect).toBeVisible();
+        await this.quantitySelect.selectOption(String(quantity));
     }
 
     async isBasketTotalPriceHigherThan(initialTotalPrice: number) {
-        let newTotalPrice = await this.getTotalPrice();
-    
-        expect(newTotalPrice).toBeGreaterThan(initialTotalPrice);
+        await expect
+            .poll(() => this.getTotalPrice(), {
+                message: `Expected basket total price to be higher than ${initialTotalPrice}`,
+            })
+            .toBeGreaterThan(initialTotalPrice);
     }
 }

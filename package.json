@@ -5,11 +5,12 @@
   "devDependencies": {
     "@playwright/test": "^1.51.1",
     "@types/node": "^22.13.10",
-    "dotenv": "^16.4.7"
+    "typescript": "^5.8.2"
   },
   "scripts": {
     "test": "playwright test --project=firefox",
-    "test-ui": "playwright test --project=firefox --ui",
-    "report": "playwright show-report"
+    "test-ui": "playwright test --project=firefox --ui --debug",
+    "report": "playwright show-report",
+    "typecheck": "tsc --noEmit"
   }
 }

@@ -18,8 +18,6 @@ export default class BasePage extends BaseComponent {
     }
 
     public async clickTopMenuOption(optionText: string) {
-        await this.page.locator(`nav a:has-text("${optionText}")`).click();
-        await this.page.waitForLoadState('networkidle');
-        await this.page.waitForTimeout(1000);
+        await this.clickByText(this.page.locator('nav a'), optionText);
     }
 }
