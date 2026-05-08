@@ -1,9 +1,10 @@
-import { Page } from '@playwright/test';
+import { expect, Page } from '@playwright/test';
 import { BaseComponent } from 'pages/BaseComponent';
 import { BasketSidebar } from 'pages/BasketSidebar';
 
 export class BasePage extends BaseComponent {
     public basketSidebar: BasketSidebar;
+    private readonly miniCartTrigger = this.page.getByRole('button', { name: /Przełącz mini koszyk/i });
 
     constructor(page: Page) {
         super(page);
@@ -19,5 +20,10 @@ export class BasePage extends BaseComponent {
 
     public async clickTopMenuOption(optionText: string) {
         await this.clickByText(this.page.locator('nav a'), optionText);
+    }
+
+    public async openMiniCart() {
+        await expect(this.miniCartTrigger).toBeVisible();
+        await this.miniCartTrigger.click();
     }
 }

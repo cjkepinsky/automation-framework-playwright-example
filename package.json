@@ -8,8 +8,8 @@
     "typescript": "^5.8.2"
   },
   "scripts": {
-    "test": "playwright test --project=firefox",
-    "test-ui": "playwright test --project=firefox --ui --debug",
+    "test:debug": "playwright test --project=chromium --ui --debug",
+    "test": "playwright test --project=chromium",
     "report": "playwright show-report",
     "typecheck": "tsc --noEmit"
   }

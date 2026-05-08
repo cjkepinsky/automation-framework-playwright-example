@@ -29,6 +29,10 @@ export class BasketPage extends BasePage {
         await this.quantitySelect.selectOption(String(quantity));
     }
 
+    async expectProductName(productName: string) {
+        await expect(this.page.getByRole('link', { name: productName }).first()).toBeVisible();
+    }
+
     async isBasketTotalPriceHigherThan(initialTotalPrice: number) {
         await expect
             .poll(() => this.getTotalPrice(), {

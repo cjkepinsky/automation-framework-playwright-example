@@ -8,6 +8,10 @@ Automation tests in Playwright - example for the 4F website.
 4. Change product quantity in the cart and verify that the total price increases.
 5. Generate an HTML report after the run.
 
+# Available examples
+1. `tests/basket.spec.ts` - real end-to-end flow against the live 4F backend.
+2. `tests/basket.mocked.spec.ts` - the add-to-basket flow with the cart GraphQL backend mocked in the test.
+
 # Installation
 `npm install`
 

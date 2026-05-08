@@ -9,6 +9,7 @@
       "labels": ["tests/labels/index.ts"],
       "labels/*": ["tests/labels/*"],
       "fixtures/*": ["tests/fixtures/*"],
+      "mocks/*": ["tests/mocks/*"],
       "support/*": ["tests/support/*"]
     },
     "types": ["node", "@playwright/test"],
