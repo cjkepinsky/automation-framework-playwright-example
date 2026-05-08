@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
-import BaseComponent from './BaseComponent';
-import BasketSidebar from './BasketSidebar';
+import { BaseComponent } from 'pages/BaseComponent';
+import { BasketSidebar } from 'pages/BasketSidebar';
 
-export default class BasePage extends BaseComponent {
+export class BasePage extends BaseComponent {
     public basketSidebar: BasketSidebar;
 
     constructor(page: Page) {

@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
-import BasePage from './BasePage';
-import { plLabels } from '../labels';
+import { plLabels } from 'labels';
+import { BasePage } from 'pages/BasePage';
 
-export default class BasketPage extends BasePage {
+export class BasketPage extends BasePage {
     private readonly totalPriceLocator = this.page.locator('[class*="priceSummary-totalPrice"]').first();
     private readonly quantitySelect = this.page.locator('select[name="quantity"]').first();
 

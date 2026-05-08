@@ -1,8 +1,8 @@
 import { expect, Page } from '@playwright/test';
-import BasePage from './BasePage';
-import { plLabels } from '../labels';
+import { plLabels } from 'labels';
+import { BasePage } from 'pages/BasePage';
 
-export default class NewProductsPage extends BasePage {
+export class NewProductsPage extends BasePage {
     private readonly productCards = this.page.locator('[class*="item-root"] a[class*="item-images"]');
 
     constructor(page: Page) {

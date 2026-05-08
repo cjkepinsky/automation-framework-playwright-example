@@ -1,10 +1,10 @@
 import { Page } from '@playwright/test';
-import BasketPage from '../pages/BasketPage';
-import HomePage from '../pages/HomePage';
-import NewProductsPage from '../pages/NewProductsPage';
-import ProductDetailsPage from '../pages/ProductDetailsPage';
+import { BasketPage } from 'pages/BasketPage';
+import { HomePage } from 'pages/HomePage';
+import { NewProductsPage } from 'pages/NewProductsPage';
+import { ProductDetailsPage } from 'pages/ProductDetailsPage';
 
-export default class ShopSession {
+export class ShopSession {
     readonly homePage: HomePage;
     readonly newProductsPage: NewProductsPage;
     readonly productDetailsPage: ProductDetailsPage;

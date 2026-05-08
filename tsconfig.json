@@ -2,7 +2,15 @@
   "compilerOptions": {
     "target": "ESNext",
     "module": "commonjs",
+    "baseUrl": ".",
     "lib": ["ESNext", "DOM"],
+    "paths": {
+      "pages/*": ["tests/pages/*"],
+      "labels": ["tests/labels/index.ts"],
+      "labels/*": ["tests/labels/*"],
+      "fixtures/*": ["tests/fixtures/*"],
+      "support/*": ["tests/support/*"]
+    },
     "types": ["node", "@playwright/test"],
     "esModuleInterop": true,
     "resolveJsonModule": true,

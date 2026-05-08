@@ -1,8 +1,8 @@
 import { Page } from '@playwright/test';
-import BasePage from './BasePage';
-import { plLabels } from '../labels';
+import { plLabels } from 'labels';
+import { BasePage } from 'pages/BasePage';
 
-export default class HomePage extends BasePage {
+export class HomePage extends BasePage {
     private readonly cookiesDialog = this.page.locator('#CybotCookiebotDialog');
     private readonly cookiesDialogAgreeBtnLocator = this.page.locator('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
     private readonly languageModalCloseBtnLocator = this.page.locator('button.betterMaskFit-closeButton-Mq0');

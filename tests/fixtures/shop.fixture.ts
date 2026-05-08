@@ -1,5 +1,5 @@
 import { test as base } from '@playwright/test';
-import ShopSession from '../support/ShopSession';
+import { ShopSession } from 'support/ShopSession';
 
 type ShopFixtures = {
     shopSession: ShopSession;

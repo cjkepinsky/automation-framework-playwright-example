@@ -1,8 +1,8 @@
 import { expect, Page } from '@playwright/test';
-import BasePage from './BasePage';
-import { plLabels } from '../labels';
+import { plLabels } from 'labels';
+import { BasePage } from 'pages/BasePage';
 
-export default class ProductDetailsPage extends BasePage {
+export class ProductDetailsPage extends BasePage {
     private readonly productDetailsFormLocator = this.page.locator('form[class*="productFullDetail-mainForm"]').first();
     
     constructor(page: Page) {

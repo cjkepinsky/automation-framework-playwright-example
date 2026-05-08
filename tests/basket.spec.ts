@@ -1,5 +1,5 @@
-import { test } from './fixtures/shop.fixture';
-import { plLabels } from './labels';
+import { test } from 'fixtures/shop.fixture';
+import { plLabels } from 'labels';
 
 test.describe('Guest user adds item to basket', () => {
   test('Guest user can add an item and see total increase after quantity change', async ({ shopSession }) => {

@@ -1,8 +1,8 @@
 import { expect } from '@playwright/test';
-import BaseComponent from './BaseComponent';
-import { plLabels } from '../labels';
+import { plLabels } from 'labels';
+import { BaseComponent } from 'pages/BaseComponent';
 
-export default class BasketSidebar extends BaseComponent {
+export class BasketSidebar extends BaseComponent {
     private readonly basketSidebar = this.page.locator('div[class*="miniCart-footer"]').first();
     private readonly showBasketButton = this.basketSidebar.getByRole('button', {
         name: plLabels.basket.sidebar.showBasket,

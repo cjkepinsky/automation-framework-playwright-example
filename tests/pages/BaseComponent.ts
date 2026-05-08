@@ -1,6 +1,6 @@
 import { expect, Locator, Page } from '@playwright/test';
 
-export default class BaseComponent {
+export class BaseComponent {
     protected page: Page;
 
     constructor(page: Page) {
