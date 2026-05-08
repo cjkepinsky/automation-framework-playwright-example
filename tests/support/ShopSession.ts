@@ -1,8 +1,14 @@
-import { Page } from '@playwright/test';
 import { BasketPage } from 'pages/BasketPage';
 import { HomePage } from 'pages/HomePage';
 import { NewProductsPage } from 'pages/NewProductsPage';
 import { ProductDetailsPage } from 'pages/ProductDetailsPage';
+
+type ShopSessionPages = {
+    homePage: HomePage;
+    newProductsPage: NewProductsPage;
+    productDetailsPage: ProductDetailsPage;
+    basketPage: BasketPage;
+};
 
 export class ShopSession {
     readonly homePage: HomePage;
@@ -10,14 +16,14 @@ export class ShopSession {
     readonly productDetailsPage: ProductDetailsPage;
     readonly basketPage: BasketPage;
 
-    constructor(page: Page) {
-        this.homePage = new HomePage(page);
-        this.newProductsPage = new NewProductsPage(page);
-        this.productDetailsPage = new ProductDetailsPage(page);
-        this.basketPage = new BasketPage(page);
+    constructor(pages: ShopSessionPages) {
+        this.homePage = pages.homePage;
+        this.newProductsPage = pages.newProductsPage;
+        this.productDetailsPage = pages.productDetailsPage;
+        this.basketPage = pages.basketPage;
     }
 
-    async prepareGuestBasketFlow() {
+    async prepareGuestBasketFlow(): Promise<void> {
         await this.newProductsPage.open();
         await this.homePage.acceptCookiesIfVisible();
         await this.homePage.closeLanguageModalIfVisible();

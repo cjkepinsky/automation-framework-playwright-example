@@ -1,12 +1,12 @@
 import { expect } from '@playwright/test';
-import { plLabels } from 'labels';
+import plLabels from 'labels/labels-pl.json';
 import { BasePage } from 'pages/BasePage';
 
 export class BasketPage extends BasePage {
     private readonly totalPriceLocator = this.page.locator('[class*="priceSummary-totalPrice"]').first();
     private readonly quantitySelect = this.page.locator('select[name="quantity"]').first();
 
-    async isVisible() {
+    async isVisible(): Promise<void> {
         await expect(this.page).toHaveURL(/\/cart\b/);
         await expect(this.totalPriceLocator).toBeVisible({ timeout: 10000 });
     }
@@ -24,16 +24,16 @@ export class BasketPage extends BasePage {
         return parseFloat(priceMatch[1].replace(',', '.'));
     }
 
-    async changeQuantityForFirstProduct(quantity: number) {
+    async changeQuantityForFirstProduct(quantity: number): Promise<void> {
         await expect(this.quantitySelect).toBeVisible();
         await this.quantitySelect.selectOption(String(quantity));
     }
 
-    async expectProductName(productName: string) {
+    async expectProductName(productName: string): Promise<void> {
         await expect(this.page.getByRole('link', { name: productName }).first()).toBeVisible();
     }
 
-    async isBasketTotalPriceHigherThan(initialTotalPrice: number) {
+    async isBasketTotalPriceHigherThan(initialTotalPrice: number): Promise<void> {
         await expect
             .poll(() => this.getTotalPrice(), {
                 message: `Expected basket total price to be higher than ${initialTotalPrice}`,

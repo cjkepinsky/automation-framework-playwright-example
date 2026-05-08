@@ -1,22 +1,21 @@
-import { expect, test } from '@playwright/test';
-import { plLabels } from 'labels';
-import { mockCartApi } from 'mocks/cartApi';
-import { mockStorefrontPage } from 'mocks/storefrontPage';
-import { ShopSession } from 'support/ShopSession';
+import { expect, test } from 'fixtures/shop.fixture';
+import plLabels from 'labels/labels-pl.json';
 
-test.describe('Guest user sees preloaded mocked basket content', () => {
-    test('Guest user can open the cart and see the mocked product details', async ({ page }) => {
+test.describe('Guest user sees preloaded mocked basket content', (): void => {
+    test('Guest user can open the cart and see the mocked product details', async ({
+        apiMocks,
+        basketPage,
+        newProductsPage,
+    }): Promise<void> => {
         const mockedProductName = 'Mocked basket product';
         const mockedSubtotal = 9.99;
-        await mockCartApi(page, {
+        await apiMocks.mockCartApi({
             productName: mockedProductName,
             sizeLabel: plLabels.sizes[2],
             unitPrice: mockedSubtotal,
             quantity: 1,
         });
-        await mockStorefrontPage(page);
-        const shopSession = new ShopSession(page);
-        const { basketPage, newProductsPage } = shopSession;
+        await apiMocks.mockStorefrontPage();
 
         await newProductsPage.open();
         await newProductsPage.isVisible();

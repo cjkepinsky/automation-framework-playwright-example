@@ -10,11 +10,9 @@ export default defineConfig({
   use: {
     trace: 'on-first-retry',
     ignoreHTTPSErrors: true,
+    locale: 'pl-PL',
     viewport: { width: 1560, height: 1040 },
     actionTimeout: 10000,
-    extraHTTPHeaders: {
-      'Accept-Language': 'pl-PL,pl;q=0.9,en-US;q=0.8,en;q=0.7',
-    },
   },
 
   projects: [

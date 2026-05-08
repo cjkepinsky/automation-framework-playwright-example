@@ -1,5 +1,5 @@
-import { Page } from '@playwright/test';
-import { plLabels } from 'labels';
+import { environmentConfig } from 'config/environment';
+import plLabels from 'labels/labels-pl.json';
 import { BasePage } from 'pages/BasePage';
 
 export class HomePage extends BasePage {
@@ -7,15 +7,11 @@ export class HomePage extends BasePage {
     private readonly cookiesDialogAgreeBtnLocator = this.page.locator('#CybotCookiebotDialogBodyLevelButtonLevelOptinAllowAll');
     private readonly languageModalCloseBtnLocator = this.page.locator('button.betterMaskFit-closeButton-Mq0');
 
-    constructor(page: Page) {
-        super(page);
+    async open(): Promise<void> {
+        await super.open(environmentConfig.baseUrl);
     }
 
-    async open() {
-        await super.open(plLabels.urls.home);
-    }
-
-    async acceptCookiesIfVisible() {
+    async acceptCookiesIfVisible(): Promise<void> {
         const isDialogVisible = await this.cookiesDialog
             .waitFor({ state: 'visible', timeout: 5000 })
             .then(() => true)
@@ -27,7 +23,7 @@ export class HomePage extends BasePage {
         }
     }
 
-    async closeLanguageModalIfVisible() {
+    async closeLanguageModalIfVisible(): Promise<void> {
         if (await this.languageModalCloseBtnLocator.isVisible()) {
             await this.languageModalCloseBtnLocator.click();
         }

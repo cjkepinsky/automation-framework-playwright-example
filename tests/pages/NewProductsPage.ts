@@ -1,25 +1,22 @@
-import { expect, Page } from '@playwright/test';
-import { plLabels } from 'labels';
+import { expect } from '@playwright/test';
+import { buildAppUrl } from 'config/environment';
+import plLabels from 'labels/labels-pl.json';
 import { BasePage } from 'pages/BasePage';
 
 export class NewProductsPage extends BasePage {
     private readonly productCards = this.page.locator('[class*="item-root"] a[class*="item-images"]');
 
-    constructor(page: Page) {
-        super(page);
+    async open(): Promise<void> {
+        await super.open(buildAppUrl(plLabels.paths.newProducts));
     }
 
-    async open() {
-        await super.open(plLabels.urls.newProducts);
-    }
-
-    async isVisible() {
+    async isVisible(): Promise<void> {
         await this.page.locator('.indicator-loader').waitFor({ state: 'hidden', timeout: 10000 }).catch(() => undefined);
         await expect(this.page).toHaveURL(/nowosci/i);
         await expect(this.productCards.first()).toBeVisible({ timeout: 10000 });
     }
 
-    async clickProduct(productNumber: number) {
+    async clickProduct(productNumber: number): Promise<void> {
         const productIndex = productNumber - 1;
 
         if (productIndex < 0) {

@@ -7,7 +7,7 @@ export class BaseComponent {
         this.page = page;
     }
 
-    protected async clickByText(container: string | Locator, text: string) {
+    protected async clickByText(container: string | Locator, text: string): Promise<void> {
         const scope = typeof container === 'string' ? this.page.locator(container) : container;
         const target = scope.filter({ hasText: this.createExactTextPattern(text) }).first();
 

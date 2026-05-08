@@ -5,8 +5,8 @@
     "baseUrl": ".",
     "lib": ["ESNext", "DOM"],
     "paths": {
+      "config/*": ["tests/config/*"],
       "pages/*": ["tests/pages/*"],
-      "labels": ["tests/labels/index.ts"],
       "labels/*": ["tests/labels/*"],
       "fixtures/*": ["tests/fixtures/*"],
       "mocks/*": ["tests/mocks/*"],

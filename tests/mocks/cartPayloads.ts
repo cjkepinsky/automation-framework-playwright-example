@@ -16,6 +16,23 @@ export type MockCartOptions = {
 
 export type MockCartState = Required<MockCartOptions>;
 
+type MockGraphQlObject = Record<string, unknown>;
+
+type ProductListingCartPayload = MockGraphQlObject & {
+    items: MockGraphQlObject[];
+};
+
+type PriceSummaryCartPayload = MockGraphQlObject & {
+    shipping_addresses: MockGraphQlObject[];
+    prices: MockGraphQlObject;
+};
+
+type MockMoney = {
+    currency: string;
+    value: number;
+    __typename: 'Money';
+};
+
 const defaultCartState: MockCartState = {
     cartId: 'mocked-cart-id',
     currency: 'PLN',
@@ -39,35 +56,26 @@ export function createMockCartState(options: MockCartOptions = {}): MockCartStat
     };
 }
 
-export function buildItemCountCart(state: MockCartState) {
+export function buildMiniCart(cartState: MockCartState): MockGraphQlObject {
     return {
-        id: state.cartId,
-        total_quantity: state.quantity,
-        total_summary_quantity_including_config: state.quantity,
-        __typename: 'Cart',
-    };
-}
-
-export function buildMiniCart(state: MockCartState) {
-    return {
-        id: state.cartId,
-        total_quantity: state.quantity,
+        id: cartState.cartId,
+        total_quantity: cartState.quantity,
         prices: {
-            subtotal_including_tax: money(state, cartTotal(state)),
+            subtotal_including_tax: money(cartState, cartTotal(cartState)),
             __typename: 'CartPrices',
         },
-        items: state.quantity > 0 ? [buildMiniCartItem(state)] : [],
+        items: cartState.quantity > 0 ? [buildMiniCartItem(cartState)] : [],
         __typename: 'Cart',
     };
 }
 
-export function buildCartDetails(state: MockCartState) {
-    const productListingCart = buildProductListingCart(state);
-    const priceSummaryCart = buildPriceSummaryCart(state);
+export function buildCartDetails(cartState: MockCartState): MockGraphQlObject {
+    const productListingCart = buildProductListingCart(cartState);
+    const priceSummaryCart = buildPriceSummaryCart(cartState);
 
     return {
-        id: state.cartId,
-        total_quantity: state.quantity,
+        id: cartState.cartId,
+        total_quantity: cartState.quantity,
         applied_coupons: null,
         applied_cashback_coupons: null,
         items: productListingCart.items,
@@ -80,41 +88,18 @@ export function buildCartDetails(state: MockCartState) {
     };
 }
 
-export function buildDeferredCart() {
+function buildProductListingCart(cartState: MockCartState): ProductListingCartPayload {
     return {
-        id: '',
+        id: cartState.cartId,
+        items: cartState.quantity > 0 ? [buildProductListingItem(cartState)] : [],
+        __typename: 'Cart',
+    };
+}
+
+function buildPriceSummaryCart(cartState: MockCartState): PriceSummaryCartPayload {
+    return {
+        id: cartState.cartId,
         items: [],
-        __typename: 'DeferredCart',
-    };
-}
-
-export function buildDeliveryDelayCart(state: MockCartState) {
-    return {
-        id: state.cartId,
-        delivery_delay: {
-            is_delay: false,
-            description: null,
-            __typename: 'ProductDeliveryDelay',
-        },
-        __typename: 'Cart',
-    };
-}
-
-export function buildFreeShippingCart(state: MockCartState) {
-    return {
-        id: state.cartId,
-        prices: {
-            grand_total: money(state, cartTotal(state)),
-            __typename: 'CartPrices',
-        },
-        __typename: 'Cart',
-    };
-}
-
-export function buildPriceSummaryCart(state: MockCartState) {
-    return {
-        id: state.cartId,
-        items: state.quantity > 0 ? [buildPriceSummaryItem(state)] : [],
         shipping_addresses: [{
             selected_shipping_method: {
                 amount: null,
@@ -124,17 +109,8 @@ export function buildPriceSummaryCart(state: MockCartState) {
             __typename: 'ShippingCartAddress',
         }],
         prices: {
-            applied_taxes: [{
-                amount: money(state, Number((cartTotal(state) * 0.23).toFixed(2))),
-                __typename: 'CartTaxItem',
-            }],
-            discounts: null,
-            grand_total: money(state, cartTotal(state)),
-            grand_total_excluding_shipping: money(state, cartTotal(state)),
-            savings_summary: money(state, 0),
-            subtotal_excluding_tax: money(state, netValue(cartTotal(state))),
-            subtotal_including_tax: money(state, cartTotal(state)),
-            cash_on_delivery_fee: money(state, 0),
+            grand_total: money(cartState, cartTotal(cartState)),
+            subtotal_including_tax: money(cartState, cartTotal(cartState)),
             __typename: 'CartPrices',
         },
         free_pickup_info_enabled: true,
@@ -142,232 +118,132 @@ export function buildPriceSummaryCart(state: MockCartState) {
     };
 }
 
-export function buildProductListingCart(state: MockCartState) {
+function buildMiniCartItem(cartState: MockCartState): MockGraphQlObject {
     return {
-        id: state.cartId,
-        items: state.quantity > 0 ? [buildProductListingItem(state)] : [],
-        __typename: 'Cart',
-    };
-}
-
-function buildMiniCartItem(state: MockCartState) {
-    return {
-        uid: state.itemUid,
-        product: buildMiniCartProduct(state),
-        last_piece: null,
+        uid: cartState.itemUid,
+        product: buildMiniCartProduct(cartState),
         prices: {
-            row_total_including_tax: money(state, cartTotal(state)),
+            row_total_including_tax: money(cartState, cartTotal(cartState)),
             __typename: 'CartItemPrices',
         },
-        quantity: state.quantity,
-        personalized: false,
-        configurable_options: [buildSelectedSizeOption(state)],
+        quantity: cartState.quantity,
+        configurable_options: [buildSelectedSizeOption(cartState)],
         customizable_options: [],
         __typename: 'ConfigurableCartItem',
     };
 }
 
-function buildMiniCartProduct(state: MockCartState) {
+function buildMiniCartProduct(cartState: MockCartState): MockGraphQlObject {
     return {
-        id: state.productId,
-        uid: state.productUid,
-        name: state.productName,
-        sku: state.parentSku,
-        url_key: state.productUrlKey,
-        is_promo_allowed: false,
-        thumbnail: {
-            url: state.thumbnailUrl,
-            __typename: 'ProductImage',
-        },
+        id: cartState.productId,
+        uid: cartState.productUid,
+        name: cartState.productName,
+        sku: cartState.parentSku,
+        url_key: cartState.productUrlKey,
+        thumbnail: productImage(cartState),
         stock_status: 'IN_STOCK',
-        is_mobile_only: false,
-        variants: [],
         price_range: {
-            maximum_price: buildProductPrice(state),
-            omnibus_price: buildEmptyOmnibusPrice(),
+            maximum_price: buildProductPrice(cartState),
             __typename: 'PriceRange',
         },
         __typename: 'ConfigurableProduct',
     };
 }
 
-function buildPriceSummaryItem(state: MockCartState) {
+function buildProductListingItem(cartState: MockCartState): MockGraphQlObject {
     return {
-        uid: state.itemUid,
-        quantity: state.quantity,
-        errors: null,
-        product: {
-            uid: state.productUid,
-            is_mobile_only: false,
-            __typename: 'ConfigurableProduct',
-        },
-        __typename: 'ConfigurableCartItem',
-    };
-}
-
-function buildProductListingItem(state: MockCartState) {
-    return {
-        uid: state.itemUid,
-        cart_item_delay: {
-            is_delay: false,
-            __typename: 'ProductDeliveryDelay',
-        },
-        product: buildProductListingProduct(state),
-        last_piece: {
-            salable_qty: 10,
-            label: '',
-            is_last_item: false,
-            is_last_items: false,
-            __typename: 'LastPieceData',
-        },
-        total_price_incl_tax: money(state, cartTotal(state)),
-        quantity: state.quantity,
+        uid: cartState.itemUid,
+        product: buildProductListingProduct(cartState),
+        total_price_incl_tax: money(cartState, cartTotal(cartState)),
+        quantity: cartState.quantity,
         errors: null,
         configurable_options: [{
             id: 1,
-            ...buildSelectedSizeOption(state),
+            ...buildSelectedSizeOption(cartState),
             value_id: 1011,
         }],
         customizable_options: [],
         prices: {
-            price: money(state, netValue(state.unitPrice)),
-            row_total: {
-                value: netValue(cartTotal(state)),
-                __typename: 'Money',
-            },
-            row_total_including_tax: {
-                value: cartTotal(state),
-                __typename: 'Money',
-            },
-            total_item_discount: {
-                value: 0,
-                __typename: 'Money',
-            },
+            row_total_including_tax: money(cartState, cartTotal(cartState)),
             __typename: 'CartItemPrices',
         },
         __typename: 'ConfigurableCartItem',
     };
 }
 
-function buildProductListingProduct(state: MockCartState) {
+function buildProductListingProduct(cartState: MockCartState): MockGraphQlObject {
     return {
-        id: state.productId,
-        uid: state.productUid,
-        name: state.productName,
-        sku: state.parentSku,
-        url_key: state.productUrlKey,
-        ec_brand: '4F',
-        product_breadcrumbs: [],
-        colors: [],
-        thumbnail: productImage(state),
+        id: cartState.productId,
+        uid: cartState.productUid,
+        name: cartState.productName,
+        sku: cartState.parentSku,
+        url_key: cartState.productUrlKey,
+        thumbnail: productImage(cartState),
+        small_image: productImage(cartState),
         stock_status: 'IN_STOCK',
-        small_image: productImage(state),
-        is_mobile_only: false,
-        price: {
-            regularPrice: {
-                amount: money(state, state.unitPrice),
-                __typename: 'Price',
-            },
-            __typename: 'ProductPrices',
-        },
         price_range: {
-            minimum_price: {
-                final_price: money(state, state.unitPrice),
-                regular_price: money(state, state.unitPrice),
-                __typename: 'ProductPrice',
-            },
-            omnibus_price: buildEmptyOmnibusPrice(),
-            uom_price: {
-                final_price: {
-                    value: null,
-                    currency: null,
-                    uom: null,
-                    __typename: 'UnitOfMeasureMoney',
-                },
-                __typename: 'UnitOfMeasurePrice',
-            },
-            maximum_price: buildProductPrice(state),
+            minimum_price: buildProductPrice(cartState),
+            maximum_price: buildProductPrice(cartState),
             __typename: 'PriceRange',
         },
-        is_promo_allowed: false,
-        discount_percentage: null,
-        variants: [buildSelectedVariant(state)],
+        variants: [buildSelectedVariant(cartState)],
         __typename: 'ConfigurableProduct',
     };
 }
 
-function buildSelectedVariant(state: MockCartState) {
+function buildSelectedVariant(cartState: MockCartState): MockGraphQlObject {
     return {
         attributes: [{
             uid: 'mock-size-attribute',
             code: 'size',
-            label: state.sizeLabel,
+            label: cartState.sizeLabel,
             value_index: 1011,
             __typename: 'ConfigurableAttributeOption',
         }],
         product: {
-            uid: `${state.productUid}-variant`,
-            sku: state.sku,
+            uid: `${cartState.productUid}-variant`,
+            sku: cartState.sku,
             stock_status: 'IN_STOCK',
-            small_image: productImage(state),
+            small_image: productImage(cartState),
             __typename: 'SimpleProduct',
         },
         __typename: 'ConfigurableVariant',
     };
 }
 
-function buildSelectedSizeOption(state: MockCartState) {
+function buildSelectedSizeOption(cartState: MockCartState): MockGraphQlObject {
     return {
         configurable_product_option_uid: 'mock-size-option',
         option_label: 'Rozmiar',
         configurable_product_option_value_uid: 'mock-size-value',
-        value_label: state.sizeLabel,
+        value_label: cartState.sizeLabel,
         __typename: 'SelectedConfigurableOption',
     };
 }
 
-function buildProductPrice(state: MockCartState) {
+function buildProductPrice(cartState: MockCartState): MockGraphQlObject {
     return {
-        final_price: money(state, state.unitPrice),
-        regular_price: money(state, state.unitPrice),
-        discount: {
-            amount_off: 0,
-            __typename: 'ProductDiscount',
-        },
+        final_price: money(cartState, cartState.unitPrice),
+        regular_price: money(cartState, cartState.unitPrice),
         __typename: 'ProductPrice',
     };
 }
 
-function buildEmptyOmnibusPrice() {
+function productImage(cartState: MockCartState): MockGraphQlObject {
     return {
-        final_price: {
-            value: null,
-            currency: null,
-            __typename: 'Money',
-        },
-        __typename: 'OmnibusPrice',
-    };
-}
-
-function productImage(state: MockCartState) {
-    return {
-        url: state.thumbnailUrl,
+        url: cartState.thumbnailUrl,
         __typename: 'ProductImage',
     };
 }
 
-function money(state: MockCartState, value: number) {
+function money(cartState: MockCartState, value: number): MockMoney {
     return {
-        currency: state.currency,
+        currency: cartState.currency,
         value,
         __typename: 'Money',
     };
 }
 
-function cartTotal(state: MockCartState) {
-    return state.unitPrice * state.quantity;
-}
-
-function netValue(value: number) {
-    return Number((value / 1.23).toFixed(2));
+function cartTotal(cartState: MockCartState): number {
+    return cartState.unitPrice * cartState.quantity;
 }

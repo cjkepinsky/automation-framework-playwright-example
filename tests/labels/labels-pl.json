@@ -22,9 +22,7 @@
     "currency": {
         "short": "PLN"
     },
-    "urls": {
-        "home": "https://4f.com.pl/",
-        "dashboard": "https://4f.com.pl/customer/account",
-        "newProducts": "https://4f.com.pl/nowosci/mezczyzni/odziez.html"
+    "paths": {
+        "newProducts": "/nowosci/mezczyzni/odziez.html"
     }
 }

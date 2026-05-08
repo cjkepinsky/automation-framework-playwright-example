@@ -1,0 +1,36 @@
+<!doctype html>
+<html lang="pl">
+<head>
+    <meta charset="utf-8">
+    <title>Mocked cart</title>
+</head>
+<body>
+    <main>
+        <h1>{{basketTitle}}</h1>
+        <a data-testid="cart-product-link"></a>
+        <div class="priceSummary-totalPrice" hidden></div>
+    </main>
+    <script>
+        const productLink = document.querySelector('[data-testid="cart-product-link"]');
+        const totalPrice = document.querySelector('.priceSummary-totalPrice');
+
+        const formatPrice = (value, currency) => value.toFixed(2).replace('.', ',') + ' ' + currency;
+
+        fetch('/graphql', {
+            method: 'POST',
+            headers: { 'content-type': 'application/json' },
+            body: JSON.stringify({ operationName: 'GetCartDetails' })
+        })
+            .then(response => response.json())
+            .then(({ data }) => {
+                const item = data.cart.items[0];
+                const total = data.cart.prices.grand_total;
+
+                productLink.href = '/' + item.product.url_key + '.html';
+                productLink.textContent = item.product.name;
+                totalPrice.textContent = formatPrice(total.value, total.currency);
+                totalPrice.hidden = false;
+            });
+    </script>
+</body>
+</html>

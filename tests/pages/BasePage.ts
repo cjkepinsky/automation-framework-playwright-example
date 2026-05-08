@@ -11,18 +11,18 @@ export class BasePage extends BaseComponent {
         this.basketSidebar = new BasketSidebar(page);
     }
 
-    public async open(url: string) {
+    public async open(url: string): Promise<void> {
         await this.page.goto(url, {
             waitUntil: 'domcontentloaded',
             timeout: 30000
         });
     }
 
-    public async clickTopMenuOption(optionText: string) {
+    public async clickTopMenuOption(optionText: string): Promise<void> {
         await this.clickByText(this.page.locator('nav a'), optionText);
     }
 
-    public async openMiniCart() {
+    public async openMiniCart(): Promise<void> {
         await expect(this.miniCartTrigger).toBeVisible();
         await this.miniCartTrigger.click();
     }
