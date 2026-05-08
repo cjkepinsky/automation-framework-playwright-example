@@ -12,8 +12,8 @@ export class BasePage extends BaseComponent {
     }
 
     public async open(url: string) {
-        await this.page.goto(url, { 
-            waitUntil: 'load',
+        await this.page.goto(url, {
+            waitUntil: 'domcontentloaded',
             timeout: 30000
         });
     }
