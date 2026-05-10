@@ -11,4 +11,3 @@ export const environmentConfig: EnvironmentConfig = {
 export function buildAppUrl(path: string): string {
     return new URL(path, environmentConfig.baseUrl).toString();
 }
-Ń
