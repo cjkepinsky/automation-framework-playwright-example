@@ -1,4 +1,3 @@
-import { environmentConfig } from 'config/environment';
 import plLabels from 'labels/labels-pl.json';
 import { BasePage } from 'pages/BasePage';
 
@@ -8,7 +7,7 @@ export class HomePage extends BasePage {
     private readonly languageModalCloseBtnLocator = this.page.locator('button.betterMaskFit-closeButton-Mq0');
 
     async open(): Promise<void> {
-        await super.open(environmentConfig.baseUrl);
+        await super.open();
     }
 
     async acceptCookiesIfVisible(): Promise<void> {

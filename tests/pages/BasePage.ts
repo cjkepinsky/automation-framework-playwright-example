@@ -1,4 +1,5 @@
 import { expect, Page } from '@playwright/test';
+import { buildAppUrl } from 'config/environment';
 import { BaseComponent } from 'pages/BaseComponent';
 import { BasketSidebar } from 'pages/BasketSidebar';
 
@@ -11,8 +12,8 @@ export class BasePage extends BaseComponent {
         this.basketSidebar = new BasketSidebar(page);
     }
 
-    public async open(url: string): Promise<void> {
-        await this.page.goto(url, {
+    public async open(path = '/'): Promise<void> {
+        await this.page.goto(buildAppUrl(path), {
             waitUntil: 'domcontentloaded',
             timeout: 30000
         });

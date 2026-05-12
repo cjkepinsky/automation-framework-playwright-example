@@ -40,7 +40,7 @@ This should be treated as diagnostics, not as a way to bypass protection on a th
 # Environment
 `BASE_URL` defines the tested environment host. By default, tests use `https://4f.com.pl/`.
 
-Example configuration is available in `.env.example`.
+Local `.env` values are loaded automatically by Playwright. Example configuration is available in `.env.example`.
 
 # Quality checks
 `npm run typecheck`

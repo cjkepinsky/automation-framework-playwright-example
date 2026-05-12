@@ -1,5 +1,4 @@
 import { expect } from '@playwright/test';
-import { buildAppUrl } from 'config/environment';
 import plLabels from 'labels/labels-pl.json';
 import { BasePage } from 'pages/BasePage';
 
@@ -7,7 +6,7 @@ export class NewProductsPage extends BasePage {
     private readonly productCards = this.page.locator('[class*="item-root"] a[class*="item-images"]');
 
     async open(): Promise<void> {
-        await super.open(buildAppUrl(plLabels.paths.newProducts));
+        await super.open(plLabels.paths.newProducts);
     }
 
     async isVisible(): Promise<void> {
