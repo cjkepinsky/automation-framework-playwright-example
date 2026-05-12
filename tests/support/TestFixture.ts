@@ -3,20 +3,20 @@ import { HomePage } from 'pages/HomePage';
 import { NewProductsPage } from 'pages/NewProductsPage';
 import { ProductDetailsPage } from 'pages/ProductDetailsPage';
 
-type ShopSessionPages = {
+type TestFixturePages = {
     homePage: HomePage;
     newProductsPage: NewProductsPage;
     productDetailsPage: ProductDetailsPage;
     basketPage: BasketPage;
 };
 
-export class ShopSession {
+export class TestFixture {
     readonly homePage: HomePage;
     readonly newProductsPage: NewProductsPage;
     readonly productDetailsPage: ProductDetailsPage;
     readonly basketPage: BasketPage;
 
-    constructor(pages: ShopSessionPages) {
+    constructor(pages: TestFixturePages) {
         this.homePage = pages.homePage;
         this.newProductsPage = pages.newProductsPage;
         this.productDetailsPage = pages.productDetailsPage;

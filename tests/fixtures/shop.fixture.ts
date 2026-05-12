@@ -4,14 +4,14 @@ import { BasketPage } from 'pages/BasketPage';
 import { HomePage } from 'pages/HomePage';
 import { NewProductsPage } from 'pages/NewProductsPage';
 import { ProductDetailsPage } from 'pages/ProductDetailsPage';
-import { ShopSession } from 'support/ShopSession';
+import { TestFixture } from '../support/TestFixture';
 
 type ShopFixtures = {
     homePage: HomePage;
     newProductsPage: NewProductsPage;
     productDetailsPage: ProductDetailsPage;
     basketPage: BasketPage;
-    shopSession: ShopSession;
+    shopSession: TestFixture;
     apiMocks: ApiMocks;
 };
 
@@ -29,7 +29,7 @@ export const test = base.extend<ShopFixtures>({
         await use(new BasketPage(page));
     },
     shopSession: async ({ homePage, newProductsPage, productDetailsPage, basketPage }, use): Promise<void> => {
-        await use(new ShopSession({
+        await use(new TestFixture({
             homePage,
             newProductsPage,
             productDetailsPage,
